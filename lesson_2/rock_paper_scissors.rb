@@ -1,5 +1,12 @@
 VALID_CHOICES = %w(rock paper scissors)
-YES_OR_NO = %w(yes no y n)
+YES = %w(yes y)
+NO = %w(no n)
+WINNING_MOVES = { rock: 'scissors',
+                  paper: 'rock',
+                  scissors: 'paper' }
+LOSING_MOVES = { scissors: 'rock',
+                 rock: 'paper',
+                 paper: 'scissors' }
 
 def prompt(message)
   puts("=> #{message}")
@@ -9,26 +16,22 @@ def play_again?
   loop do
     prompt("Play Again? (Y/N)")
     play_again = gets.chomp.downcase
-    if YES_OR_NO.include?(play_again)
-      if (play_again == 'y') || (play_again == 'yes')
-        return true
-      elsif play_again == 'n' || play_again == 'no'
-        return false
-      end
-    else
-      prompt("There was a problem.")
-    end
+
+    return true if YES.include?(play_again)
+    return false if NO.include?(play_again)
+    prompt("There was a problem.")
   end
 end
 
+def win?(player, computer)
+  return true if WINNING_MOVES[player.to_sym].include?(computer)
+  return false if LOSING_MOVES[player.to_sym].include?(computer)
+end
+
 def display_results(player, computer)
-  if (player == 'rock' && computer == 'scissors') ||
-     (player == 'paper' && computer == 'rock') ||
-     (player == 'scissors' && computer == 'paper')
+  if win?(player, computer)
     prompt("You Win!")
-  elsif (player == 'scissors' && computer == 'rock') ||
-        (player == 'rock' && computer == 'paper') ||
-        (player == 'paper' && computer == 'scissors')
+  elsif win?(player, computer) == false
     prompt("You Lose :(")
   else
     prompt("Its a Tie.")
