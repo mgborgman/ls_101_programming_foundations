@@ -5,11 +5,11 @@ VALID_CHOICES = { 'rock' => 'r',
                   'spock' => 'sp' }
 YES = %w(yes y)
 NO = %w(no n)
-WINNING_MOVES = { rock: ['scissors', 'lizard'],
-                  paper: ['rock', 'spock'],
-                  scissors: ['paper', 'lizard'],
-                  lizard: ['paper', 'spock'],
-                  spock: ['scissors', 'rock'] }
+WINNING_MOVES = { rock: %w(scissorslizard),
+                  paper: %w(rock spock),
+                  scissors: %w(paper lizard),
+                  lizard: %w(paper spock),
+                  spock: %w(scissors rock) }
 
 player_wins = 0
 computer_wins = 0
@@ -48,9 +48,8 @@ end
 
 def win?(first, second)
   return true if WINNING_MOVES[first.to_sym].include?(second)
-  #return false if LOSING_MOVES[player.to_sym].include?(computer)
+  # return false if LOSING_MOVES[player.to_sym].include?(computer)
 end
-
 
 def display_results(player, computer)
   if win?(player, computer)
@@ -66,11 +65,9 @@ prompt("Welcome to Rock Paper Scissors Lizard Spock. \
   First to 5 wins!")
 loop do
   user_choice = ''
-  # ask user to choose rock, paper, or scissors
   loop do
     display_player_choices(choices_msg)
     user_choice = gets.chomp
-    # validate user input
     if VALID_CHOICES.values.include?(user_choice)
       break
     else
@@ -78,28 +75,26 @@ loop do
     end
   end
 
-  full_word_user_pick = VALID_CHOICES.key(user_choice)
-  # create computers random choice
-  computer_choice = VALID_CHOICES.values.sample
-  full_word_computer_pick = VALID_CHOICES.key(computer_choice)
+  user_pick = VALID_CHOICES.key(user_choice)
+  computer_pick = VALID_CHOICES.key.sample
 
-  prompt("You chose: #{full_word_user_pick} \
-  Computer chose: #{full_word_computer_pick}")
-  
-  display_results(full_word_user_pick, full_word_computer_pick)
+  prompt("You chose: #{user_pick} \
+  Computer chose: #{computer_pick}")
 
-  if win?(full_word_user_pick, full_word_computer_pick)
+  display_results(user_pick, computer_pick)
+
+  if win?(user_pick, computer_pick)
     player_wins += 1
-  elsif win?(full_word_computer_pick, full_word_user_pick)
+  elsif win?(computer_pick, user_pick)
     computer_wins += 1
   end
-  
+
   display_score(player_wins, computer_wins)
 
   next unless player_wins == 5 || computer_wins == 5
 
   break unless play_again?
-  player_wins = 0 
+  player_wins = 0
   computer_wins = 0
 end
 
