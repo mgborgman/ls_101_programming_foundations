@@ -5,7 +5,7 @@ VALID_CHOICES = { 'rock' => 'r',
                   'spock' => 'sp' }
 YES = %w(yes y)
 NO = %w(no n)
-WINNING_MOVES = { rock: %w(scissorslizard),
+WINNING_MOVES = { rock: %w(scissors lizard),
                   paper: %w(rock spock),
                   scissors: %w(paper lizard),
                   lizard: %w(paper spock),
@@ -47,7 +47,7 @@ def play_again?
 end
 
 def win?(first, second)
-  return true if WINNING_MOVES[first.to_sym].include?(second)
+  WINNING_MOVES[first.to_sym].include?(second)
   # return false if LOSING_MOVES[player.to_sym].include?(computer)
 end
 
@@ -67,7 +67,7 @@ loop do
   user_choice = ''
   loop do
     display_player_choices(choices_msg)
-    user_choice = gets.chomp
+    user_choice = gets.chomp.downcase
     if VALID_CHOICES.values.include?(user_choice)
       break
     else
@@ -76,7 +76,7 @@ loop do
   end
 
   user_pick = VALID_CHOICES.key(user_choice)
-  computer_pick = VALID_CHOICES.key.sample
+  computer_pick = VALID_CHOICES.keys.sample
 
   prompt("You chose: #{user_pick} \
   Computer chose: #{computer_pick}")
