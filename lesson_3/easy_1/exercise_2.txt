@@ -1,0 +1,26 @@
+Describe the difference between ! and ? in Ruby.
+=> ! is typically used to either mutate a caller by adding it to the end of a function name or check if something is NOT equivlent.
+=> ? is typically used to indicate that a method returns a boolean.
+
+ And explain what would happen in the following scenarios:
+
+what is != and where should you use it?
+=> stands for does not equal. Would use in a conditional as in
+if a != b 
+	puts "a does not equal b"
+end
+
+put ! before something, like !user_name
+=> NOT operator. In the exapmle if would read "Not user_name". So if user_name evaluates to true if would be read as false and vice versa.
+
+put ! after something, like words.uniq!
+=> typically this means that the method uniq will mutate the caller in this instance. Although it does not always work, you can not simply add ! to any method and have that method mutate the caller.
+
+put ? before something
+=> ? before a number will return the ASCII character code
+
+put ? after something
+=> If you put ? after a method that typically means that the specified method returns true or false. 
+
+put !! before something, like !!user_name
+=> Chaining of ! before something like user_name. So if user_name evaluates to true and one ! NOTs the variable and makes it be read as false, then two !! does a double NOT which makes the variable go from true to false back to true.
