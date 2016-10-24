@@ -1,0 +1,7 @@
+numbers = [1, 2, 2, 3]
+numbers.uniq
+
+puts numbers
+
+
+ANSWER: I would expect this code to output => "1 2 2 3", this is because even though the uniq method eliminates duplicates from the given array it does not mutate the caller. 
