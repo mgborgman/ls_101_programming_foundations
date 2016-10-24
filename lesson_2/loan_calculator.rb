@@ -139,5 +139,3 @@ monthly_payment = loan_ammount.to_i * (monthly_interest_rate_decimal /
 (1 - (1 + monthly_interest_rate_decimal)**-loan_duration_months.to_i))
 
 prompt("Your monthly payments will be: #{monthly_payment}")
-
-# print result to screen.
