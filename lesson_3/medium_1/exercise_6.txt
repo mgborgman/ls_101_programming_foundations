@@ -1,0 +1,1 @@
+Both methods return the same value. Difference is that on the first line of the two methods, on the first method you are mutating the buffer argument passed into the method, whereas in the second method you are passing the input_array argument into the buffer variable which allows input_array to maintain its value.

@@ -1,0 +1,25 @@
+What happens when we modify an array while we are iterating over it? What would be output by this code?
+
+numbers = [1, 2, 3, 4]
+numbers.each do |number|
+  p number
+  numbers.shift(1)
+end
+
+Answer:
+=> 1
+=> 3
+This occurs due to after each out put the array is changed. After the first iteration the array change to [2, 3, 4] but the loop thinks it has gone over the first item so it skips 2 and puts 3 to the screen. 
+
+What would be output by this code?
+
+numbers = [1, 2, 3, 4]
+numbers.each do |number|
+  p number
+  numbers.pop(1)
+end
+
+Answer:
+=> 1
+=> 2
+Same as above except that with pop the numbers come off the end of the array not the beginning.
