@@ -1,0 +1,16 @@
+What is the output of the following code?
+
+answer = 42
+
+def mess_with_it(some_number)
+  some_number += 8
+end
+
+new_answer = mess_with_it(answer)
+
+p answer - 8
+
+Answer:
+=> 34
+
+This output is due to the fact that the code does not display the result of method mess_with_it() however it simply subtracts 8 from the answer variable during the p statement.

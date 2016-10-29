@@ -1,0 +1,1 @@
+Spot would have ransacked the family's data, because in his method mess_with_demographics() he does not use a placeholder to retain the original value of demo_hash. Therefore after the changes have been made they are permanate.
