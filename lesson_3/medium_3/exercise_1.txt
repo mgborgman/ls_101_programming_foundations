@@ -1,0 +1,4 @@
+When a_outer = 42, a_outer.object_id = 85
+when a_outer = 22, a_outer.object_id = 45
+
+This pattern is repeated for the other variables as in, when you change the value of a variable the value of the object_id changes as well.

@@ -1,0 +1,6 @@
+=> "My string looks like this now: pumpkins"
+=> "My array looks like this now: [pumpkins, rutabaga]"
+
+This is due to the String#+= method does not mutate the caller, however it creates a new variable inside the method tricky_method() that we are not displaying to screen once outside the method scope.
+
+The Array#<< method however does mutate the caller, it concatenates the original variable that was passed into the tricky_method() so the same place that the original parameter was pointing now holds two elements in the array instead of just one.

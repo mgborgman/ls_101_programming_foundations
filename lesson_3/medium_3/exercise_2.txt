@@ -1,0 +1,1 @@
+Seems as though the values will end of being the same as in exercise 1 but separating some code out to a method call.
