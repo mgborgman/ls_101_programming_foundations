@@ -1,0 +1,78 @@
+What will be printed by each of these code groups?
+
+A)
+
+def mess_with_vars(one, two, three)
+  one = two
+  two = three
+  three = one
+end
+
+one = "one"
+two = "two"
+three = "three"
+
+mess_with_vars(one, two, three)
+
+puts "one is: #{one}"
+=> "one is: one"
+
+puts "two is: #{two}"
+=> "two is: two"
+
+puts "three is: #{three}"
+=> "three is: three"
+
+This is because the variable are initialized outside of the method, as well as they are not returned from the method after being changed. Therefore when they are displayed to the screen we are seeing their original values.
+
+
+B)
+
+def mess_with_vars(one, two, three)
+  one = "two"
+  two = "three"
+  three = "one"
+end
+
+one = "one"
+two = "two"
+three = "three"
+
+mess_with_vars(one, two, three)
+
+puts "one is: #{one}"
+=> "one is: one"
+
+puts "two is: #{two}"
+=> "two is: two"
+
+puts "three is: #{three}"
+=> "three is: three"
+
+This is because even though inside the method it is simple assigning a value to a variable, there is no return of the variables to the main scope. Therefore when we display to screen, we are displaying the values at their original values, not the values from within the methods scope which we do not have access to.
+
+
+C)
+
+def mess_with_vars(one, two, three)
+  one.gsub!("one","two")
+  two.gsub!("two","three")
+  three.gsub!("three","one")
+end
+
+one = "one"
+two = "two"
+three = "three"
+
+mess_with_vars(one, two, three)
+
+puts "one is: #{one}"
+=> "one is: two"
+
+puts "two is: #{two}"
+=> "two is: three"
+
+puts "three is: #{three}"
+=> "three is: one"
+
+This is because String#gsub! is a method which mutates the caller. Therefore when you pass-in "one" as a variable to the mess_with_variables method, you end up changing that variable to "two" without having to return it. Which means when you call the variable to be displayed to the screen, you are still calling it from the proper scope but it has been changed in all areas to "two".
