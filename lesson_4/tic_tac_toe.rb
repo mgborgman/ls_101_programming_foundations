@@ -41,16 +41,6 @@ def display_board(brd)
   puts ""
 end
 
-# def is_player_first?
-#   if GOES_FIRST == 'choose'
-#     'choose'
-#   elsif GOES_FIRST == 'player'
-#     'player'
-#   elsif GOES_FIRST == 'computer'
-#     'computer'
-#   end
-# end
-
 def player_turn(brd)
   loop do
     display_board(brd)
@@ -145,16 +135,12 @@ end
 def find_at_risk_square(line, brd)
   if brd.values_at(*line).count(PLAYER_MARKER) == 2
     brd.select { |k, v| line.include?(k) && v == INITIAL_MARKER }.keys.first
-  # else
-  #   nil
   end
 end
 
 def find_winning_square(line, brd)
   if brd.values_at(*line).count(COMPUTER_MARKER) == 2
     brd.select { |k, v| line.include?(k) && v == INITIAL_MARKER }.keys.first
-  # else
-  #   nil
   end
 end
 
@@ -179,7 +165,7 @@ def count_wins(brd, player_wins, computer_wins)
   elsif detect_winner(brd) == 'Computer'
     computer_wins += 1
   end
-  player_wins, computer_wins
+  return player_wins, computer_wins
 end
 
 def play_again?
@@ -204,7 +190,7 @@ loop do
     take_turn(board)
   else
     loop do
-      prompt "Who goes first, Player or Computer." + 
+      prompt "Who goes first, Player or Computer." \
              "Enter P for Player for C for computer."
       input = gets.chomp.downcase
 
@@ -217,7 +203,7 @@ loop do
       end
     end
   end
- 
+
   take_turn(input, board)
 
   display_board(board)
@@ -237,7 +223,6 @@ loop do
     computer_wins = 0
     break unless play_again?
   end
-
 end
 
 prompt "Thanks for playing Tic-Tac-Toe!"
