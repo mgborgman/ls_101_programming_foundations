@@ -108,15 +108,15 @@ def computer_places_piece!(brd)
     break if square
   end
 
-  if !square
-    if empty_squares(brd).include?(5)
-      square = 5
-    end
-  end
+  # if !square
+  square = 5 if empty_squares(brd).include?(5) unless square
+  square = empty_squares(brd).sample unless square
+    
 
-  if !square
-    square = empty_squares(brd).sample
-  end
+
+  # if !square
+  #   square = empty_squares(brd).sample
+  # end
 
   brd[square] = COMPUTER_MARKER
 end
