@@ -155,19 +155,18 @@ def play_again?
 end
 
 current_player = nil
+first_player = nil
 
 loop do
   board = initalize_board
 
   if GOES_FIRST != 'choose'
     current_player = GOES_FIRST
-    break
   elsif current_player.nil?
     loop do
       prompt "Who goes first, Player or Computer." \
                "Enter P for Player for C for computer."
       current_player = gets.chomp.downcase
-
       if current_player == 'p'
         break
       elsif current_player == 'c'
@@ -178,13 +177,15 @@ loop do
     end
   end
 
+  first_player = current_player
+
   loop do
     display_board(board)
     place_piece!(board, current_player)
     current_player = alternate_player(current_player)
     break if someone_won?(board) || board_full?(board)
   end
-
+  current_player = first_player
   display_board(board)
 
   if someone_won?(board)
