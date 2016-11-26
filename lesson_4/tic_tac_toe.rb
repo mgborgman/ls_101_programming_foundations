@@ -41,7 +41,7 @@ def display_board(brd)
   puts ""
 end
 
-def player_turn(brd)
+def players_turn_first(brd)
   loop do
     display_board(brd)
 
@@ -53,7 +53,7 @@ def player_turn(brd)
   end
 end
 
-def computer_turn(brd)
+def computers_turn_first(brd)
   loop do
     display_board(brd)
 
@@ -69,13 +69,13 @@ end
 
 def take_turn(input, brd)
   if GOES_FIRST == 'player'
-    player_turn(brd)
+    players_turn_first(brd)
   elsif GOES_FIRST == 'computer'
-    computer_turn(brd)
+    computers_turn_first(brd)
   elsif input == 'p'
-    player_turn(brd)
+    players_turn_first(brd)
   elsif input == 'c'
-    computer_turn(brd)
+    computers_turn_first(brd)
   end
 end
 
@@ -104,15 +104,8 @@ end
 def computer_places_piece!(brd)
   square = nil
   WINNING_LINES.each do |line|
-    square = find_winning_square(line, brd)
+    square = find_optimal_move(line, brd)
     break if square
-  end
-
-  if !square
-    WINNING_LINES.each do |line|
-      square = find_at_risk_square(line, brd)
-      break if square
-    end
   end
 
   if !square
@@ -132,14 +125,18 @@ def board_full?(brd)
   empty_squares(brd).empty?
 end
 
-def find_at_risk_square(line, brd)
-  if brd.values_at(*line).count(PLAYER_MARKER) == 2
-    brd.select { |k, v| line.include?(k) && v == INITIAL_MARKER }.keys.first
-  end
+def count_computer_marker(line, brd)
+  brd.values_at(*line).count(COMPUTER_MARKER)
 end
 
-def find_winning_square(line, brd)
-  if brd.values_at(*line).count(COMPUTER_MARKER) == 2
+def count_player_marker(line, brd)
+  brd.values_at(*line).count(PLAYER_MARKER)
+end
+
+def find_optimal_move(line, brd)
+  if count_computer_marker(line, brd) == 2
+    brd.select { |k, v| line.include?(k) && v == INITIAL_MARKER }.keys.first
+  elsif count_player_marker(line, brd) == 2
     brd.select { |k, v| line.include?(k) && v == INITIAL_MARKER }.keys.first
   end
 end
@@ -183,15 +180,18 @@ def play_again?
   end
 end
 
+input = nil
+
 loop do
   board = initalize_board
-  input = ''
+
   if GOES_FIRST != 'choose'
-    take_turn(board)
-  else
+    input = GOES_FIRST
+    break
+  elsif input.nil?
     loop do
       prompt "Who goes first, Player or Computer." \
-             "Enter P for Player for C for computer."
+               "Enter P for Player for C for computer."
       input = gets.chomp.downcase
 
       if input == 'p'
@@ -221,6 +221,7 @@ loop do
   if player_wins >= 5 || computer_wins >= 5
     player_wins = 0
     computer_wins = 0
+    input = nil
     break unless play_again?
   end
 end
