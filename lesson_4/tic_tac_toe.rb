@@ -8,7 +8,7 @@ WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] +
                 [[1, 4, 7], [2, 5, 8], [3, 6, 9]] +
                 [[1, 5, 9], [3, 5, 7]].freeze
 
-wins = { player: 0, computer: 0}
+wins = { player: 0, computer: 0 }
 
 def prompt(msg)
   puts "=> #{msg}"
@@ -50,8 +50,8 @@ def alternate_player(current_player)
   elsif current_player == 'c'
     'p'
   end
-end  
-      
+end
+
 def place_piece!(brd, current_player)
   if current_player == 'player' || current_player == 'p'
     player_places_piece!(brd)
@@ -178,11 +178,11 @@ loop do
     end
   end
 
-  loop do 
+  loop do
     display_board(board)
     place_piece!(board, current_player)
     current_player = alternate_player(current_player)
-    break if someone_won?(board) || board_full?(board)    
+    break if someone_won?(board) || board_full?(board)
   end
 
   display_board(board)
@@ -194,7 +194,8 @@ loop do
   end
 
   wins = count_wins(board, wins)
-  prompt "Current Score: Player: #{wins[:player]} | Computer: #{wins[:computer]}"
+  prompt "Current Score: Player: #{wins[:player]} |"\
+  " Computer: #{wins[:computer]}"
   sleep 2
 
   if wins[:player] >= 5 || wins[:computer] >= 5
