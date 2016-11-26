@@ -8,8 +8,7 @@ WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] +
                 [[1, 4, 7], [2, 5, 8], [3, 6, 9]] +
                 [[1, 5, 9], [3, 5, 7]].freeze
 
-player_wins = 0
-computer_wins = 0
+wins = { player: 0, computer: 0}
 
 def prompt(msg)
   puts "=> #{msg}"
@@ -41,41 +40,23 @@ def display_board(brd)
   puts ""
 end
 
-def players_turn_first(brd)
-  loop do
-    display_board(brd)
-
-    player_places_piece!(brd)
-    break if someone_won?(brd) || board_full?(brd)
-
-    computer_places_piece!(brd)
-    break if someone_won?(brd) || board_full?(brd)
+def alternate_player(current_player)
+  if current_player == 'player'
+    'computer'
+  elsif current_player == 'computer'
+    'player'
+  elsif current_player == 'p'
+    'c'
+  elsif current_player == 'c'
+    'p'
   end
-end
-
-def computers_turn_first(brd)
-  loop do
-    display_board(brd)
-
-    computer_places_piece!(brd)
-    break if someone_won?(brd) || board_full?(brd)
-
-    display_board(brd)
-
+end  
+      
+def place_piece!(brd, current_player)
+  if current_player == 'player' || current_player == 'p'
     player_places_piece!(brd)
-    break if someone_won?(brd) || board_full?(brd)
-  end
-end
-
-def take_turn(input, brd)
-  if GOES_FIRST == 'player'
-    players_turn_first(brd)
-  elsif GOES_FIRST == 'computer'
-    computers_turn_first(brd)
-  elsif input == 'p'
-    players_turn_first(brd)
-  elsif input == 'c'
-    computers_turn_first(brd)
+  else
+    computer_places_piece!(brd)
   end
 end
 
@@ -108,15 +89,8 @@ def computer_places_piece!(brd)
     break if square
   end
 
-  # if !square
   square = 5 if empty_squares(brd).include?(5) unless square
   square = empty_squares(brd).sample unless square
-    
-
-
-  # if !square
-  #   square = empty_squares(brd).sample
-  # end
 
   brd[square] = COMPUTER_MARKER
 end
@@ -156,13 +130,13 @@ def detect_winner(brd)
   nil
 end
 
-def count_wins(brd, player_wins, computer_wins)
+def count_wins(brd, wins)
   if detect_winner(brd) == 'Player'
-    player_wins += 1
+    wins[:player] += 1
   elsif detect_winner(brd) == 'Computer'
-    computer_wins += 1
+    wins[:computer] += 1
   end
-  return player_wins, computer_wins
+  wins
 end
 
 def play_again?
@@ -180,23 +154,23 @@ def play_again?
   end
 end
 
-input = nil
+current_player = nil
 
 loop do
   board = initalize_board
 
   if GOES_FIRST != 'choose'
-    input = GOES_FIRST
+    current_player = GOES_FIRST
     break
-  elsif input.nil?
+  elsif current_player.nil?
     loop do
       prompt "Who goes first, Player or Computer." \
                "Enter P for Player for C for computer."
-      input = gets.chomp.downcase
+      current_player = gets.chomp.downcase
 
-      if input == 'p'
+      if current_player == 'p'
         break
-      elsif input == 'c'
+      elsif current_player == 'c'
         break
       else
         prompt "Please enter P or C."
@@ -204,7 +178,12 @@ loop do
     end
   end
 
-  take_turn(input, board)
+  loop do 
+    display_board(board)
+    place_piece!(board, current_player)
+    current_player = alternate_player(current_player)
+    break if someone_won?(board) || board_full?(board)    
+  end
 
   display_board(board)
 
@@ -214,14 +193,14 @@ loop do
     prompt "It's a tie!"
   end
 
-  player_wins, computer_wins = count_wins(board, player_wins, computer_wins)
-  prompt "Current Score: Player: #{player_wins} | Computer: #{computer_wins}"
+  wins = count_wins(board, wins)
+  prompt "Current Score: Player: #{wins[:player]} | Computer: #{wins[:computer]}"
   sleep 2
 
-  if player_wins >= 5 || computer_wins >= 5
-    player_wins = 0
-    computer_wins = 0
-    input = nil
+  if wins[:player] >= 5 || wins[:computer] >= 5
+    wins[:player] = 0
+    wins[:computer] = 0
+    current_player = nil
     break unless play_again?
   end
 end
