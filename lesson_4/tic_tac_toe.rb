@@ -85,13 +85,11 @@ end
 def computer_places_piece!(brd)
   square = nil
   WINNING_LINES.each do |line|
-    square = find_optimal_move(line, brd)
-    break if square
+    square ||= find_offensive_move(line, brd)
+    square ||= find_defensive_move(line, brd) unless square
   end
-
-  square = 5 if empty_squares(brd).include?(5) unless square
-  square = empty_squares(brd).sample unless square
-
+  square = center_square(brd) unless square
+  square = random_square(brd) unless square
   brd[square] = COMPUTER_MARKER
 end
 
@@ -107,12 +105,26 @@ def count_player_marker(line, brd)
   brd.values_at(*line).count(PLAYER_MARKER)
 end
 
-def find_optimal_move(line, brd)
-  if count_computer_marker(line, brd) == 2
-    brd.select { |k, v| line.include?(k) && v == INITIAL_MARKER }.keys.first
-  elsif count_player_marker(line, brd) == 2
+def find_defensive_move(line, brd)
+  if brd.values_at(*line).count(PLAYER_MARKER) == 2
     brd.select { |k, v| line.include?(k) && v == INITIAL_MARKER }.keys.first
   end
+end
+
+def find_offensive_move(line, brd)
+  if brd.values_at(*line).count(COMPUTER_MARKER) == 2
+    brd.select { |k, v| line.include?(k) && v == INITIAL_MARKER }.keys.first
+  end
+end
+
+def center_square(brd)
+  if empty_squares(brd).include?(5)
+    5
+  end
+end
+
+def random_square(brd)
+  empty_squares(brd).sample
 end
 
 def someone_won?(brd)
