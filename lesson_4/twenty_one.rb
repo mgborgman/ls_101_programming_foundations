@@ -50,7 +50,7 @@ def total(hand)
     end
   end
 
-  #correct for aces
+  # correct for aces
   values.select { |value| value == 'ace' }.count.times do
     total -= 10 if total > 21
   end
@@ -68,13 +68,18 @@ def play_again?
   answer.downcase.start_with?('y')
 end
 
+def show_ending_totals(player_total, dealers_total)
+  prompt "Dealers Total: #{dealers_total}"
+  prompt "Your Total: #{player_total}"
+end
+
 def winner(player_total, dealers_total)
   if player_total > 21
     prompt "You Busted!"
     prompt "You Lose!"
   elsif dealers_total > 21
     prompt "Dealer Busted"
-    prompt "You Win!"    
+    prompt "You Win!"
   elsif player_total > dealers_total
     prompt "You Win!"
   elsif dealers_total > player_total
@@ -83,15 +88,14 @@ def winner(player_total, dealers_total)
 end
 
 loop do
-
   loop do
-  deck = initalize_deck
-  players_hand, dealers_hand = deal_cards(deck)
-  player_total = 0
-  dealers_total = 0
-  check_cards_players_turn(players_hand, dealers_hand)
+    deck = initalize_deck
+    players_hand, dealers_hand = deal_cards(deck)
+    player_total = 0
+    dealers_total = 0
+    check_cards_players_turn(players_hand, dealers_hand)
 
-  #player_turn
+    # player_turn
     player_move = ''
     loop do
       prompt("Hit or Stay? ")
@@ -106,13 +110,14 @@ loop do
     end
     player_total = total(players_hand)
     if bust?(players_hand)
+      show_ending_totals(player_total, dealers_total)
       winner(player_total, dealers_total)
       break
-    elsif player_move == 'stay' 
+    elsif player_move == 'stay'
       prompt("You chose to stay at #{player_total}")
     end
 
-  #dealer_turn
+    # dealer_turn
     loop do
       if dealers_total < 17
         prompt("dealer chooses to hit")
@@ -128,9 +133,11 @@ loop do
     end
     dealers_total = total(dealers_hand)
     if bust?(dealers_hand)
+      show_ending_totals(player_total, dealers_total)
       winner(player_total, dealers_total)
       break
     end
+    show_ending_totals(player_total, dealers_total)
     winner(player_total, dealers_total)
   end
   break unless play_again?
