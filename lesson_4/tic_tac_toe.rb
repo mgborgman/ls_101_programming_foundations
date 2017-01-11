@@ -86,6 +86,8 @@ def computer_places_piece!(brd)
   square = nil
   WINNING_LINES.each do |line|
     square ||= find_offensive_move(line, brd)
+  end
+  WINNING_LINES.each do |line|
     square ||= find_defensive_move(line, brd) unless square
   end
   square = center_square(brd) unless square
@@ -116,6 +118,12 @@ def find_offensive_move(line, brd)
     brd.select { |k, v| line.include?(k) && v == INITIAL_MARKER }.keys.first
   end
 end
+
+# def find_optimal_move(line, brd, marker)
+#   if brd.values_at(*line).count(marker) == 2
+#     brd.select { |k, v| line.include?(k) && v == INITIAL_MARKER }.keys.first
+#   end
+# end
 
 def center_square(brd)
   if empty_squares(brd).include?(5)
@@ -169,7 +177,7 @@ end
 current_player = nil
 first_player = nil
 
-loop do
+ loop do
   board = initalize_board
 
   if GOES_FIRST != 'choose'
