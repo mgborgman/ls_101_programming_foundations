@@ -119,12 +119,6 @@ def find_offensive_move(line, brd)
   end
 end
 
-# def find_optimal_move(line, brd, marker)
-#   if brd.values_at(*line).count(marker) == 2
-#     brd.select { |k, v| line.include?(k) && v == INITIAL_MARKER }.keys.first
-#   end
-# end
-
 def center_square(brd)
   if empty_squares(brd).include?(5)
     5
@@ -177,7 +171,7 @@ end
 current_player = nil
 first_player = nil
 
- loop do
+loop do
   board = initalize_board
 
   if GOES_FIRST != 'choose'
@@ -185,7 +179,7 @@ first_player = nil
   elsif current_player.nil?
     loop do
       prompt "Who goes first, Player or Computer." \
-               "Enter P for Player for C for computer."
+              "Enter P for Player for C for computer."
       current_player = gets.chomp.downcase
       if current_player == 'p'
         break
@@ -219,12 +213,12 @@ first_player = nil
   " Computer: #{wins[:computer]}"
   sleep 2
 
-  if wins[:player] >= 5 || wins[:computer] >= 5
-    wins[:player] = 0
-    wins[:computer] = 0
-    current_player = nil
-    break unless play_again?
-  end
+  next unless wins[:player] >= 5 || wins[:computer] >= 5
+
+  wins[:player] = 0
+  wins[:computer] = 0
+  current_player = nil
+  break unless play_again?
 end
 
 prompt "Thanks for playing Tic-Tac-Toe!"
