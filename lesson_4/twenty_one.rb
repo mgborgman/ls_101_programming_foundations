@@ -1,37 +1,23 @@
 SUITS = ['hearts', 'diamonds', 'spades', 'clubs'].freeze
-
-card_faces = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'jack', 'queen',
-              'king', 'ace']
+CARD_FACES = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'jack', 'queen',
+              'king', 'ace'].freeze
 
 def prompt(msg)
   puts ">> #{msg}"
 end
 
-def initalize_deck(card_faces)
-  deck = []
-  SUITS.each do |suit|
-    card_faces.each do |card|
-      deck << [suit, card]
-    end
-  end
-  deck
+def initalize_deck
+  SUITS.product(CARD_FACES).shuffle
 end
 
-def join_or(array = nil)
+def join_and(array = nil)
   return array.to_s if array.nil? || array.length <= 1
   array[0..-2].join(", ") + " and " + array[-1]
-end
-
-def remove_suit_from_hand(hand)
-  hand.flatten!
-  hand.delete_if { |item| SUITS.include?(item) }
-  hand
 end
 
 def deal_cards(deck)
   players_hand = []
   dealers_hand = []
-  deck.shuffle!
 
   2.times do
     players_hand << deck.shift
@@ -42,109 +28,112 @@ end
 
 def check_cards_players_turn(players_hand, dealers_hand)
   prompt "Dealer has: #{dealers_hand.first} and unknown"
-  prompt "You have: #{join_or(players_hand)}"
+  prompt "You have: #{players_hand}"
 end
 
 def check_cards_dealers_turn(players_hand, dealers_hand)
-  prompt("Dealer has: #{join_or(dealers_hand)}")
-  prompt("Player has: #{join_or(players_hand)}")
+  prompt("Dealer has: #{join_and(dealers_hand)}")
+  prompt("Player has: #{join_and(players_hand)}")
 end
 
-def separate_aces(hand)
-  hand.sort_by! do |card|
-    if card =~ /^\d+$/
-      [2, $&.to_i]
+def total(hand)
+  values = hand.map { |card| card[1] }
+
+  total = 0
+  values.each do |value|
+    if value == 'ace'
+      total += 11
+    elsif %w(king queen jack).include?(value)
+      total += 10
     else
-      [1, card]
+      total += value.to_i
     end
   end
-  hand.reverse
-end
 
-def running_total(hand)
-  total = 0
-  hand.each do |card|
-    if card.to_i.nonzero?
-      total += card.to_i
-    elsif %w(king queen jack).include?(card)
-      total += 10
-    elsif card == 'ace' && total + 11 <= 21
-      total += 11
-    else
-      total += 1
-    end
+  #correct for aces
+  values.select { |value| value == 'ace' }.count.times do
+    total -= 10 if total > 21
   end
   total
 end
 
 def bust?(hand)
-  total = running_total(hand)
-  total > 21
+  total(hand) > 21
+end
+
+def play_again?
+  puts "-------------"
+  prompt "Do you want to play again? (y/n)"
+  answer = gets.chomp
+  answer.downcase.start_with?('y')
 end
 
 def winner(player_total, dealers_total)
-  if player_total > dealers_total
-    prompt("You Win!")
-  else
-    prompt("Dealer Wins")
+  if player_total > 21
+    prompt "You Busted!"
+    prompt "You Lose!"
+  elsif dealers_total > 21
+    prompt "Dealer Busted"
+    prompt "You Win!"    
+  elsif player_total > dealers_total
+    prompt "You Win!"
+  elsif dealers_total > player_total
+    prompt "Dealer Wins"
   end
 end
 
-def player_turn(players_hand, dealers_hand, deck)
-  total = 0
-  move = ''
-  loop do
-    players_hand = remove_suit_from_hand(players_hand)
-    check_cards_players_turn(players_hand, dealers_hand)
-    prompt("Hit or Stay? ")
-    move = gets.chomp.downcase
-    break if move == 'stay'
-    next if !move.include?('hit')
-    players_hand << deck.shift
-    players_hand = remove_suit_from_hand(players_hand)
-    players_hand = separate_aces(players_hand)
-    break if bust?(players_hand)
-  end
-  if bust?(players_hand)
-    prompt("Bust!")
-    prompt("You Lose!")
-    exit
-  elsif move == 'stay'
-    total = running_total(players_hand)
-    prompt("You chose to stay at #{total}")
-  end
-  total
-end
+loop do
 
-def dealer_turn(players_hand, dealers_hand, deck)
-  total = 0
   loop do
-    dealers_hand = remove_suit_from_hand(dealers_hand)
-    dealers_hand = separate_aces(dealers_hand)
-    check_cards_dealers_turn(players_hand, dealers_hand)
-    prompt("Dealer Hit or Stay? ")
-    if total < 17
-      prompt("dealer chooses to hit")
-      dealers_hand << deck.shift
-    else
-      prompt("dealer chooses to stay at #{total}")
+  deck = initalize_deck
+  players_hand, dealers_hand = deal_cards(deck)
+  player_total = 0
+  dealers_total = 0
+  check_cards_players_turn(players_hand, dealers_hand)
+
+  #player_turn
+    player_move = ''
+    loop do
+      prompt("Hit or Stay? ")
+      player_move = gets.chomp.downcase
+      break if player_move == 'stay'
+      next unless player_move.include?('hit')
+      players_hand << deck.shift
+      player_total = total(players_hand)
+      prompt "Your new hand is: #{players_hand}"
+      prompt "Your new total is: #{player_total}"
+      break if bust?(players_hand)
+    end
+    player_total = total(players_hand)
+    if bust?(players_hand)
+      winner(player_total, dealers_total)
+      break
+    elsif player_move == 'stay' 
+      prompt("You chose to stay at #{player_total}")
+    end
+
+  #dealer_turn
+    loop do
+      if dealers_total < 17
+        prompt("dealer chooses to hit")
+        dealers_hand << deck.shift
+        dealers_total = total(dealers_hand)
+        prompt "Dealers hand is #{dealers_hand}"
+        prompt "Dealers total is #{dealers_total}"
+      else
+        prompt("dealer chooses to stay at #{dealers_total}")
+        break
+      end
+      break if bust?(dealers_hand)
+    end
+    dealers_total = total(dealers_hand)
+    if bust?(dealers_hand)
+      winner(player_total, dealers_total)
       break
     end
-    dealers_hand = remove_suit_from_hand(dealers_hand)
-    total = running_total(dealers_hand)
-    break if bust?(dealers_hand)
+    winner(player_total, dealers_total)
   end
-  if bust?(dealers_hand)
-    prompt("Dealer Busts!")
-    prompt("You Win!")
-    exit
-  end
-  total
+  break unless play_again?
 end
 
-deck = initalize_deck(card_faces)
-players_hand, dealers_hand = deal_cards(deck)
-remove_suit_from_hand(dealers_hand)
-players_total = player_turn(players_hand, dealers_hand, deck)
-dealers_total = dealer_turn(players_hand, dealers_hand, deck)
-winner(players_total, dealers_total)
+prompt "Thanks for playing Twenty One!"
