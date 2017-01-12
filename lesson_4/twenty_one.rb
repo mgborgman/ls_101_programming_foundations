@@ -1,6 +1,10 @@
 SUITS = ['hearts', 'diamonds', 'spades', 'clubs'].freeze
 CARD_FACES = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'jack', 'queen',
               'king', 'ace'].freeze
+PLAY_UNTIL = 21
+STAY_AT = 17
+
+wins = { player: 0, dealer: 0 }
 
 def prompt(msg)
   puts ">> #{msg}"
@@ -52,13 +56,13 @@ def total(hand)
 
   # correct for aces
   values.select { |value| value == 'ace' }.count.times do
-    total -= 10 if total > 21
+    total -= 10 if total > PLAY_UNTIL
   end
   total
 end
 
 def bust?(hand)
-  total(hand) > 21
+  total(hand) > PLAY_UNTIL
 end
 
 def play_again?
@@ -68,23 +72,34 @@ def play_again?
   answer.downcase.start_with?('y')
 end
 
-def show_ending_totals(player_total, dealers_total)
-  prompt "Dealers Total: #{dealers_total}"
-  prompt "Your Total: #{player_total}"
-end
-
 def winner(player_total, dealers_total)
-  if player_total > 21
+  if player_total > PLAY_UNTIL
     prompt "You Busted!"
     prompt "You Lose!"
-  elsif dealers_total > 21
+    'dealer'
+  elsif dealers_total > PLAY_UNTIL
     prompt "Dealer Busted"
     prompt "You Win!"
+    'player'
   elsif player_total > dealers_total
     prompt "You Win!"
+    'player'
   elsif dealers_total > player_total
     prompt "Dealer Wins"
+    'dealer'
+  else
+    prompt "It's a Draw"
   end
+end
+
+def add_wins(winner, wins)
+  if winner == 'player'
+    wins[:player] += 1
+  elsif winner == 'dealer'
+    wins[:dealer] += 1
+  end
+  prompt "You have #{wins[:player]} wins"
+  prompt "Dealer has #{wins[:dealer]} wins"
 end
 
 loop do
@@ -98,20 +113,19 @@ loop do
     # player_turn
     player_move = ''
     loop do
+      break if player_move == 'stay' || bust?(players_hand)
       prompt("Hit or Stay? ")
       player_move = gets.chomp.downcase
-      break if player_move == 'stay'
       next unless player_move.include?('hit')
       players_hand << deck.shift
       player_total = total(players_hand)
-      prompt "Your new hand is: #{players_hand}"
-      prompt "Your new total is: #{player_total}"
-      break if bust?(players_hand)
+      prompt "Your hand is: #{players_hand}"
+      prompt "Your total is: #{player_total}"
     end
     player_total = total(players_hand)
     if bust?(players_hand)
-      show_ending_totals(player_total, dealers_total)
-      winner(player_total, dealers_total)
+      round_point = winner(player_total, dealers_total)
+      add_wins(round_point, wins)
       break
     elsif player_move == 'stay'
       prompt("You chose to stay at #{player_total}")
@@ -119,7 +133,7 @@ loop do
 
     # dealer_turn
     loop do
-      if dealers_total < 17
+      if dealers_total < STAY_AT
         prompt("dealer chooses to hit")
         dealers_hand << deck.shift
         dealers_total = total(dealers_hand)
@@ -131,15 +145,17 @@ loop do
       end
       break if bust?(dealers_hand)
     end
-    dealers_total = total(dealers_hand)
     if bust?(dealers_hand)
-      show_ending_totals(player_total, dealers_total)
-      winner(player_total, dealers_total)
+      round_point = winner(player_total, dealers_total)
+      add_wins(round_point, wins)
       break
     end
-    show_ending_totals(player_total, dealers_total)
-    winner(player_total, dealers_total)
+      round_point = winner(player_total, dealers_total)
+      add_wins(round_point, wins)
   end
+  next unless wins[:player] >= 5 || wins[:dealer] >= 5
+  wins[:player] = 0
+  wins[:dealer] = 0
   break unless play_again?
 end
 
