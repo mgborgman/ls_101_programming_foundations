@@ -11,8 +11,12 @@ end
 
 
 def string_to_signed_integer(string)
-  if string.include?('-')
-    string_to_integer(string)
+  if string[0] == ('-')
+    string = string.chars
+    string.shift
+    string.join
+    result = '-'
+    result << string_to_integer(string)
   else
     string_to_integer(string)
   end
@@ -21,3 +25,5 @@ end
 
 p string_to_integer('4321')# == 4321
 p string_to_integer('570')# == 570
+p string_to_signed_integer('100')
+p string_to_signed_integer('-100')

@@ -1,9 +1,14 @@
-def ascii_value(str)
-  result = 0
-  str.chars.each do |letter|
-    result += letter.ord
-  end
-  result
+def ascii_value(string)
+  total = 0
+  string.chars.map {|char| total += char.ord}
+  total
 end
 
-ascii_value("Launch School")
+
+
+
+
+puts ascii_value('Four score') #== 984
+puts ascii_value('Launch School')#== 1251
+puts ascii_value('a') #== 97
+puts ascii_value('') #== 0
