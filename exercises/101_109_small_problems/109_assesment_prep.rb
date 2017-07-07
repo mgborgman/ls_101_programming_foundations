@@ -980,23 +980,1083 @@ require 'date'
 # p my_method([3, 4])
 # p my_method([5, 6, 7])
 
-vehicles = ['car', 'car', 'truck', 'car', 'SUV', 'truck', 'motorcycle', 'motorcycle', 'car', 'truck']
+# vehicles = ['car', 'car', 'truck', 'car', 'SUV', 'truck', 'motorcycle', 'motorcycle', 'car', 'truck']
 
-def count_occurances(arr)
-  result = {}
-  arr.each do |element|
-    if result.has_key?(element)
-      result[element] += 1
-    else
-      result[element] = 1
-    end
+# def count_occurances(arr)
+#   result = {}
+#   arr.each do |element|
+#     if result.has_key?(element)
+#       result[element] += 1
+#     else
+#       result[element] = 1
+#     end
+#   end
+#   result.each do |k, v|
+#     puts "#{k} => #{v}"
+#   end
+# end
+
+# count_occurances(vehicles)
+
+# def reverse_sentence(string)
+#   string.split.reverse.join(' ')
+# end
+
+# puts reverse_sentence('') == ''
+# puts reverse_sentence('Hello World') == 'World Hello'
+# puts reverse_sentence('Reverse these words') == 'words these Reverse'
+
+# def reverse_words(string)
+#   result = string.split.map do |word|
+#     if word.length >= 5
+#       word.reverse
+#     else
+#       word
+#     end
+#   end
+#   result.join(' ')
+# end
+
+# p reverse_words('Professional')          # => lanoisseforP
+# p reverse_words('Walk around the block') # => Walk dnuora the kcolb
+# p reverse_words('Launch School')         # => hcnuaL loohcS
+
+
+# def stringy(num)
+#   one_or_zero = true
+#   result = ''
+#   num.times do 
+#     if one_or_zero == true
+#       result << '1'
+#     else
+#       result << '0'
+#     end
+#     one_or_zero = !one_or_zero
+#   end
+#   result
+# end
+
+# puts stringy(6) == '101010'
+# puts stringy(9) == '101010101'
+# puts stringy(4) == '1010'
+# puts stringy(7) == '1010101'
+
+# def average(arr)
+#   total = arr.reduce(:+)
+#   average = (total).to_f / (arr.length).to_f
+# end
+
+# puts average([1, 5, 87, 45, 8, 8]) #== 25
+# puts average([9, 47, 23, 95, 16, 52]) #== 40
+
+# def sum(num)
+#   sum = 0
+#   num.to_s.chars.each do |number|
+#     sum += number.to_i
+#   end
+#   sum
+# end
+
+# puts sum(23) == 5
+# puts sum(496) == 19
+# puts sum(123_456_789) == 45
+
+# def reverse(arr)
+#   result = []
+#   while !arr.empty?
+#     result << arr.pop
+#   end
+#   result
+# end
+
+# p reverse(['hello', 'matt', 'ashley', 'bruce', 1, 2, 3])
+
+
+# def fibonacci_numbers(num)
+#   result = [1, 1]
+#   index = 0
+#   while result.size < num 
+#     result << result[index] + result[index + 1]
+#     index += 1
+#   end
+#   result
+# end
+
+# def index_is_fibonacci(array)
+#   fibs = fibonacci_numbers(array.size)
+#   result = array.select {|item| fibs.include?(array.index(item))}
+# end
+
+# p index_is_fibonacci([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13])
+
+# def is_palindrome?(word)
+#   reverse = ''
+#   arr = word.chars
+#   while !arr.empty?
+#     reverse << arr.pop
+#   end
+#   word.downcase == reverse.downcase
+# end
+
+# p is_palindrome?('matt')
+# p is_palindrome?('Bob')
+# p is_palindrome?('mom')
+
+
+# def reverse(string)
+#   result = ''
+#   index = 1
+#   chars = string.chars
+#   while index <= chars.length
+#     result << chars[-index]
+#     index += 1
+#   end
+#   result
+# end
+
+# p reverse('Matt Borgman')
+
+# def fizzbuzz(start_num, ending_num)
+#   result = []
+#   numbers = (start_num..ending_num).to_a
+#   numbers.each do |num|
+#     if num == 0
+#       result << num
+#     elsif num % 5 == 0 && num % 3 == 0
+#       result << "FizzBuzz"
+#     elsif num % 5 == 0
+#       result << "Buzz"
+#     elsif num % 3 == 0
+#       result << "Fizz"
+#     else
+#       result << num
+#     end        
+#   end
+#   puts result.join(', ')
+# end
+
+# fizzbuzz(1,15)
+
+# PRODUCTS = [
+# {name: "Thinkpad x210" , price: 220},
+# {name: "Thinkpad x220" , price: 250},
+# {name: "Thinkpad x250" , price: 979},
+# {name: "Thinkpad x230" , price: 300},
+# {name: "Thinkpad x230" , price: 330},
+# {name: "Thinkpad x230" , price: 350},
+# {name: "Thinkpad x240" , price: 700},
+# {name: "Macbook Leopard" , price: 300},
+# {name: "Macbook Air" , price: 700},
+# {name: "Macbook Pro" , price: 600},
+# {name: "Macbook" , price: 1449},
+# {name: "Dell Latitude" , price: 200},
+# {name: "Dell Latitude" , price: 650},
+# {name: "Dell Inspiron" , price: 300},
+# {name: "Dell Inspiron" , price: 450}
+# ]
+
+# query = {
+#   price_min: 240,
+#   price_max: 280,
+#   q: "thinkpad" 
+# }
+
+# query2 = {
+#   price_min: 300,
+#   price_max: 450,
+#   q: 'dell'
+# }
+
+# def search(query)
+#   PRODUCTS.select do |product|
+#     product[:name].downcase.include?(query[:q]) &&
+#     product[:price] <= query[:price_max] &&
+#     product[:price] >= query[:price_min]
+#   end
+# end
+
+# p search(query)
+# p search(query2)
+
+
+# def remove_vowels(words)
+#   result = []
+#   words.each do |word|
+#     no_vowels = word.chars.delete_if { |letter| %w(a e i o u).include?(letter) }
+#     result << no_vowels.join("")
+#   end
+#   result.join(' ')
+# end
+
+# def remove_vowels_2(words)
+#   result = words.map do |word|
+#     word.delete("aeiou")
+#   end
+#   result.join(' ')
+# end
+
+# p remove_vowels(['green', 'yellow', 'white', 'black'])
+# p remove_vowels_2(['green', 'yellow', 'white', 'black'])
+
+
+# def balancer(string)
+#   count = 0
+#   string.chars.each do |char|
+#     break if count < 0
+#     count += 1 if char == '('
+#     count -= 1 if char == ')'
+#   end
+#   return true if count == 0
+#   false 
+# end
+
+# p balancer('hi')
+# p balancer('(hi)')
+# p balancer('(hi')
+# p balancer(')hi(')
+# p balancer('(()) )(')
+
+# def is_prime?(num)
+#   return true if num == 2
+#   return false if num == 0 || num == 1
+#   divisors = (2..(num - 1)).to_a
+#   divisors.each do |divisor|
+#     return false if num % divisor == 0 
+#   end
+#   true
+# end
+
+# def find_primes(starting_num, ending_num)
+#   numbers = (starting_num..ending_num).to_a
+#   numbers.select! { |num| is_prime?(num) }
+#   numbers.join(', ')
+# end
+
+# p find_primes(0, 3)
+
+# def substring(string, index1, index2=index1)
+#   string[index1..index2]
+# end
+
+# def substrings(string)
+#   index1 = 0
+#   index2 = 1
+#   result = []
+#   while index1 < string.length
+#     while index2 < string.length
+#       result << substring(string, index1, index2)
+#       index2 += 1
+#     end
+#     index1 += 1
+#     index2 = (index1 + 1)
+#   end
+#   result
+# end
+
+# def palindromes(string)
+#   potential_palindromes = substrings(string)
+#   potential_palindromes.select do |word|
+#     word == word.reverse
+#   end
+# end
+
+# def largest_palindrome(string)
+#   result = palindromes(string)
+#   result = result.sort_by { |word| word.length }
+#   result.last
+# end
+
+# p largest_palindrome("bobandmom")
+
+# p largest_palindrome("no")
+
+# p largest_palindrome("ppop")
+
+# p largest_palindrome("fleetomeremoteelf")
+
+# NUMBERS = { 'one' => 1, 'two' => 2, 'three' => 3, 'four' => 4, 'five' => 5,
+#             'six' => 6, 'seven' => 7, 'eight' => 8, 'nine' => 9, 'zero' => 0 }
+
+# OPERATORS = {'plus' => '+', 'minus' => '-', 'times' => '*', 'divided by' => '/' }
+
+# def computer(string)
+#   result = 0
+#   NUMBERS.each do |word, num|
+#     string.gsub!(word, num.to_s)
+#   end
+
+#   OPERATORS.each do |word, operator|
+#     string.gsub!(word, operator)
+#   end  
+
+#   words = string.split
+
+
+#   ((words.size) / 2).times do
+#     equation = words.shift(3)
+
+#     left_operand = equation.first.to_i
+#     right_operand = equation.last.to_i
+
+
+#     equation.each do |word|
+#       if word == '*'
+#         result = left_operand * right_operand
+#       elsif word == '/'
+#         result = left_operand / right_operand
+#       elsif word == '+'
+#         result = left_operand + right_operand
+#       elsif word == '-'
+#         result = left_operand - right_operand
+#       end        
+#     end
+#     words.unshift(result)
+#     #binding.pry
+#   end
+#   result
+# end
+
+
+
+# p computer("two plus two")
+# p computer("seven minus six")
+# p computer("zero plus eight")
+
+# p computer("two plus two minus three")
+# p computer("three minus one plus five minus four plus six plus 10 minus four")
+
+# p computer("eight times four plus six divided by two minus two")
+# p computer("one plus four times two minus two")
+# p computer("nine divided by three times six")
+
+# def reverse_odds(string)
+#   result = []
+#   string.gsub!('.', ' ')
+#   string.split.each_with_index do |word, index|
+#     if index.odd?
+#       result << word.reverse
+#     else
+#       result << word
+#     end
+#   end
+#   result.join(' ') << '.'
+# end
+
+# p reverse_odds("whats the matter with kansas.")
+# p reverse_odds("hello.")
+# p reverse_odds("hello    .")
+
+# def reverse(string)
+#   index = 1
+#   reverse_string = ''
+#   while index <= string.length
+#     reverse_string << string[-index]
+#     index += 1
+#   end
+#   reverse_string
+# end
+
+# p reverse("hello world")
+
+# def fibonacci_nums(num, stop=nil)
+#   result = [1, 1]
+#   index = 0
+#   num.times do
+#     break if result[index] == stop 
+#     result << result[index] + result[index + 1]
+#     index += 1
+#   end
+#   result
+# end
+
+# def fib_index(array)
+#   fibs = fibonacci_nums(array.length, array.length)
+#   result = array.select do |item|
+#     fibs.include?(array.index(item))
+#   end
+#   result
+# end
+
+# p fib_index([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+
+
+# def is_palindrome?(word)
+#   word.downcase == reverse(word.downcase)
+# end
+
+# p is_palindrome?("matt")
+# p is_palindrome?("Bob")
+
+
+# def how_to_loop(array)
+#   count = 0
+#   loop do
+#     count += 1
+#     break if count >= array.length
+#     next if count.even?
+#     puts array[count]
+#   end
+# end
+
+# how_to_loop([0, 1, 2, 3, 4, 5, 6, 7])
+
+# def age
+#   puts "Teddy is #{rand(20..200)} years old!"
+# end
+
+# def room_size
+#   puts "Enter the length of the room in meters: "
+#   length = gets.chomp.to_i
+
+#   puts "Enter the width of the room in meters: "
+#   width = gets.chomp.to_i
+
+#   area_meters = length * width
+#   area_feet = area_meters * 10.7639
+
+#   puts "The area of the room is #{area_meters} square meters (#{area_feet} square feet)"
+# end
+
+# room_size
+
+# def tip_calculator
+#   puts "What is the bill? "
+#   bill = gets.chomp.to_f
+
+#   puts "What is the tip percentage? "
+#   tip = gets.chomp.to_f
+
+#   tip = bill * (tip / 100.0)
+#   total = bill + tip
+
+#   puts "The tip is $#{tip}"
+#   puts "The total is $#{total}"
+# end
+
+# tip_calculator
+
+# def searching
+#   numbers = []
+#   puts "enter the 1st number: "
+#   numbers << gets.chomp.to_i
+#   puts "enter the 2nd number: "
+#   numbers << gets.chomp.to_i
+#   puts "enter the 3rd number: "
+#   numbers << gets.chomp.to_i
+#   puts "enter the 4th number: "
+#   numbers << gets.chomp.to_i
+#   puts "enter the 5th number: "
+#   numbers << gets.chomp.to_i
+#   puts "enter the last number: "
+#   last_number = gets.chomp.to_i
+
+#   p numbers.include?(last_number) ? true : false
+# end
+
+# searching
+
+# def count_chars
+#   puts "Please enter word or multiple words: "
+#   string = gets.chomp
+#   string.gsub!(' ', '')
+#   string.split('').length
+# end
+
+# p count_chars
+
+# def multiply(num1, num2)
+#   num1 * num2
+# end
+
+# def square(num)
+#   multiply(num, num)
+# end
+
+
+# NUMBERS = {'zero' => '0', 'one' => '1', 'two' => '2', 'three' => '3', 'four' => '4',
+#            'five' => '5', 'six' => '6', 'seven' => '7', 'eight' => '8', 'nine' => '9' }
+
+# def computer(string)
+#   result = []
+#   NUMBERS.each do |word, num|
+#     string.gsub!(word, num)
+#   end
+#   string.gsub!(' by', '')
+#   equation = string.downcase.split
+#   nums_length = equation.length - equation.count {|x| x == 'minus' || x == 'plus' || x == 'times' || x == 'divided'}
+#   number_of_operations = (equation.length - nums_length)
+  
+#   number_of_operations.times do
+#     current_three = equation.shift(3)
+#     if current_three.include?('plus')
+#       #binding.pry
+#       equation.unshift(current_three.first.to_i + current_three.last.to_i)
+#     elsif current_three.include?('minus')
+#       #binding.pry
+#       equation.unshift(current_three.first.to_i - current_three.last.to_i)
+#     elsif current_three.include?('times')
+#       equation.unshift(current_three.first.to_i * current_three.last.to_i)
+#     elsif current_three.include?('divided')
+#       equation.unshift(current_three.first.to_i / current_three.last.to_i)
+#     end
+#   end
+#   equation.join('').to_i
+# end
+
+# p computer('six times two')
+# p computer('two times two divided by two')
+# p computer('two times two plus two minus two')
+
+
+# def word_lengths(string)
+#   words = string.split
+#   words.map do |word|
+#     word << ' ' + word.length.to_s
+#   end
+#   words
+# end
+
+# p word_lengths('cat matt hat')
+
+# def name_swapping(name)
+#   name.split.reverse.join(', ')
+# end
+
+# p name_swapping("Matt Borgman")
+
+# def sequence(count, increment)
+#   result = []
+#   start = increment
+#   count.times do 
+#     result << start
+#     start += increment 
+#   end
+#   result
+# end
+
+# p sequence(5, 1) #== [1, 2, 3, 4, 5]
+# p sequence(4, -7) #== [-7, -14, -21, -28]
+# p sequence(3, 0) #== [0, 0, 0]
+# p sequence(0, 1000000) #== []
+
+# def get_grade(score1, score2, score3)
+#   average = ((score1 + score2 + score3) / 3)
+#   if average >= 90 && average <= 100
+#     "A"
+#   elsif average >= 80 && average < 90
+#     "B"
+#   elsif average >= 70 && average < 80
+#     "C"
+#   elsif average >= 60 && average < 70
+#     "D"
+#   else
+#     "F"
+#   end      
+# end
+
+# p get_grade(95, 90, 93) == "A"
+# p get_grade(50, 50, 95) == "D"
+
+# def buy_fruit(grocery_list)
+#   result = []
+#   grocery_list.each do |item|
+#     item[1].times do
+#       result << item[0]
+#     end
+#   end
+#   result
+# end
+
+# p buy_fruit([["apples", 3], ["orange", 1], ["bananas", 2]]) #==
+#   #["apples", "apples", "apples", "orange", "bananas","bananas"]
+
+# def rotate_array(array)
+#   rotated_array = array.dup
+#   rotated_element = rotated_array.shift
+#   rotated_array << rotated_element  
+# end
+
+# def rotate_rightmost_digits(int, index)
+#   array = []
+#   int.to_s.chars.each do |num|
+#     array << num.to_i
+#   end
+#   digits_to_rotate = array[-index..array.length]
+#   array.pop(index)
+#   rotated_array = rotate_array(digits_to_rotate)
+#   array << rotated_array
+#   array.flatten.join.to_i
+# end
+
+# def max_rotation(num)
+#   result = [] 
+#   index = num.to_s.length
+#   while index > 0
+#     num = rotate_rightmost_digits(num, index)
+#     index -= 1
+#     result = num
+#   end
+#   result
+# end
+
+# p max_rotation(735291) #== 321579
+# p max_rotation(3) #== 3
+# p max_rotation(35) #== 53
+# p max_rotation(105) #== 15 # the leading zero gets dropped
+# p max_rotation(8_703_529_146) #== 7_321_609_845
+
+# def lights(number_of_lights)
+#   lights = {}
+#   round = 1
+#   1.upto(number_of_lights) do |num|
+#     lights[num] = false
+#   end
+#   while round <= number_of_lights do
+#     lights.each do |light_position, light_status|
+#       if light_position % round == 0
+#         lights[light_position] = !light_status
+#       end
+#     end
+#     round += 1
+#   end
+#   lights
+# end
+
+# p lights(10)
+
+# def reverse(array)
+#   reversed_array = []
+#   index = 1
+#   while index <= array.length
+#     reversed_array << array[-index]
+#     index += 1
+#   end
+#   reversed_array
+# end
+
+# p reverse([1, 2, 3, 4, 5])
+# p reverse(['Matt', 'Ashley', 'Bruce', 'Cindy'])
+# p reverse([1])
+# p reverse([])
+
+# select an element out of an array if its index is a fibonacci number
+
+# def get_fibs(num)
+#   fibonacci_numbers = [0, 1]
+#   index_1 = 0
+#   index_2 = 1
+#   while fibonacci_numbers[index_2] < num
+#     fibonacci_numbers << fibonacci_numbers[index_1] + fibonacci_numbers[index_2]
+#     index_1 += 1
+#     index_2 += 1
+#   end
+#   fibonacci_numbers
+# end
+
+# def select_fibs(array)
+#   fibs = get_fibs(array.length)
+#   array.select! do |item|
+#     fibs.include?(item)
+#   end
+#   array
+# end
+
+# p select_fibs([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]) #=> [0, 1, 2, 3, 5, 8]
+
+# determine if a word is a palindrome without using the reverse method
+
+# def is_palindrome?(word)
+#   letters = word.downcase.chars
+#   reversed_word = []
+#   index = 1
+#   while index <= letters.length
+#     reversed_word << letters[-index]
+#     index += 1
+#   end
+#   reversed_word = reversed_word.join('')
+#   reversed_word == word.downcase
+# end
+
+# p is_palindrome?("Matt") #=> false
+# p is_palindrome?("Bob")  #=> true
+# p is_palindrome?("bob")  #=> true
+
+# def factorial_sum(number)
+#   # multiply all the numbers from 1 to number
+#   product = 1
+#   sum = 0
+#   1.upto(number) do |num|
+#     product *= num
+#   end
+#   # break result into single digits
+#   numbers = product.to_s.chars
+#   # sum the digits
+#   numbers.each do |num|
+#     sum += num.to_i
+#   end
+#   # return result
+#   sum
+# end
+
+# # p factorial_sum(4)
+# # p factorial_sum(6)
+
+# def find_numbers(numbers, target)
+#   # iterate through numbers checking if the first element +
+#   # any of the other elements in the array add up to target
+#   result = []
+#   index1 = 0
+#   index2 = 1
+#   while index1 < numbers.length do
+#     # check numbers[index1] against all other numbers
+#     while index2 < numbers.length do
+#       # check numbers[index1] + numbers[index2]
+#       if numbers[index1] + numbers[index2] == target
+#         result << numbers[index1] 
+#         result << numbers[index2]
+#         return result
+#       end
+#       index2 += 1
+#     end
+#     # increment index1
+#     index1 += 1
+#     # increment index2
+#     index2 = (index1 + 1)
+#   end
+#   return "No matches Found"
+# end
+
+# p find_numbers([1, 2, 3, 4], 5)
+# p find_numbers([1, 2, 3, 4], 8)
+# p find_numbers([1, 2, 3, 4], 7)
+
+# input: two sorted arrays 
+# return a sorted array 
+# do not sort the result array, result array must be built one element
+## at a time in the sorted order
+
+# def merge(arr1, arr2)
+#   result = []
+#   loop do 
+#     compare = arr1.first <=> arr2.first
+#     case compare
+#     when -1
+#       result << arr1.shift
+#     when 1
+#       result << arr2.shift
+#     when nil
+#       if arr1.empty?
+#         result << arr2.shift
+#       else
+#         result << arr1.shift
+#       end
+#     end
+#     #binding.pry
+#    break if arr1.empty? && arr2.empty?
+#   end
+#   # compare first element from arr1 with 
+#   ## first element from arr2
+#   # smaller number is appended to result array
+#   result
+# end
+
+# # p merge([1, 5, 9], [2, 6, 8]) #== [1, 2, 5, 6, 8, 9]
+# # p merge([1, 1, 3], [2, 2]) #== [1, 1, 2, 2, 3]
+# # p merge([], [1, 4, 5]) #== [1, 4, 5]
+# # p merge([1, 4, 5], []) #== [1, 4, 5]
+
+# def merge_sort(array)
+#   # 
+# end
+
+
+# merge_sort([9, 5, 7, 1]) == [1, 5, 7, 9]
+# merge_sort([5, 3]) == [3, 5]
+# merge_sort([6, 2, 7, 1, 4]) == [1, 2, 4, 6, 7]
+# merge_sort(%w(Sue Pete Alice Tyler Rachel Kim Bonnie)) == %w(Alice Bonnie Kim Pete Rachel Sue Tyler)
+# merge_sort([7, 3, 9, 15, 23, 1, 6, 51, 22, 37, 54, 43, 5, 25, 35, 18, 46]) == [1, 3, 5, 6, 7, 9, 15, 18, 22, 23, 25, 35, 37, 43, 46, 51, 54]
+
+# def find_multiples(num)
+#   range = (1...1000).to_a
+#   sum = 0
+#   # iterate over numbers from 1 to 1000
+#   range.each do |number|
+#     # check if number is a multiple or 3 or 5
+#     # if yes, add to sum
+#     if number % 3 == 0 || number % 5 == 0
+#       # sum all kept numbers
+#       sum += number
+#     end
+#   end
+#   # return sum
+#   sum
+# end
+
+# p find_multiples(1000)
+
+# By considering the terms in the Fibonacci 
+# sequence whose values do not exceed four million,
+# find the sum of the even-valued terms.
+
+# def get_fibs(num)
+#   fibs = [1, 2]
+#   index1 = 0
+#   index2 = 1
+#   while fibs[index2] < num do
+#     # append to fibs (fibs[current_index] + fibs[next_index])
+#     fibs << fibs[index1] + fibs[index2]
+#     # increment index1 by 1
+#     index1 += 1
+#     # make sure the index2 is always one more than index1
+#     index2 = (index1 + 1)
+#   end
+#   fibs.pop if fibs.last > num
+#   #return fibs array
+#   fibs
+# end
+
+# def even_fibs(num)
+#   sum = 0
+#   # create array of fibs below 4_000_000
+#   range = get_fibs(num).to_a
+#   # iterate through the array
+#   range.each do |number|
+#     # if number is even, add number to sum
+#     sum += number if number.even?
+#   end  
+#   # return sum
+#   sum
+# end
+
+# p even_fibs(4_000_000)
+
+# What is the largest prime factor of the number 600851475143 ?
+
+
+
+# return prime
+
+# def is_prime?(num)
+#   return false if num <= 2
+#   2.upto(num - 1) do |divisor|
+#     return false if num % divisor == 0
+#   end
+#   true
+# end
+
+# def find_primes(number)
+#   # find all primes up to number  
+#   range = []
+#   number.downto(1){|num| range << num}
+#   primes_within_range = []
+#   primes_within_range = range.select{|number| is_prime?(number)}
+#   # starting from largest prime check number for primes that divide
+#   ## evenly into number
+#   primes_within_range.each do |divisor|
+#     return divisor if number % divisor == 0
+#   end
+# end
+
+# p find_primes(600851475143)
+
+# Find the largest palindrome made from the product of two 3-digit numbers.
+
+# ex: 99 x 91 = 9009
+
+# def largest_palindrome(num1, num2)
+#   # take two numbers num1 and num2
+#   palindromes = []
+#   result = []
+#   # we are limited to 3 digit numbers so we start with 999 and 999
+#   # get the product of num1 and num2
+#   product = num1 * num2
+#   # find the largest palindrome equal to or less than the product
+#   range = []
+#   product.downto(1){|num| range << num}
+#   range.each do |num|
+#     palindromes << num if num.to_s == num.to_s.reverse
+#   end
+#   # check to find if it has two 3 digit factors
+#   palindromes.each do |palindrome|
+#     if palindrome % num1 == 0
+#       return palindrome
+#     else
+#       num1 -= 1
+#     end
+#   end
+#   # repeat
+#   # check if product of num1 and num2 is a numerical palindrome  
+# end
+
+
+# p largest_palindrome(999, 999)
+
+# Find the difference between the sum of the squares
+# of the first one hundred natural numbers and the square of the sum
+
+# def sum_square_difference(num)
+#   range = (1..num).to_a
+#   sum_of_squares = 0
+#   square_of_sums = 0 
+#   sum = 0
+#   range.each do |number|
+#     sum_of_squares += (number ** 2)
+#     sum += number
+#   end
+#   square_of_sums = (sum ** 2)
+#   square_of_sums - sum_of_squares
+# end
+
+
+# p sum_square_difference(100)
+
+# def sum_factorial(number)
+#   #find the factorial of number
+#   ## create variable called factorial
+#   factorial = 1
+#   sum = 0
+#   ## iterating through 1 - number
+#   1.upto(number) do |num|
+#     ## store product of factorial and current number in factorial
+#     factorial *= num
+#   end
+#   # split factorial into single digits
+#   factorial.to_s.chars.each do |num|
+#     # sum digits
+#     sum += num.to_i
+#   end
+#   sum
+# end
+
+# p sum_factorial(5)
+
+
+# class GoodDog
+#   attr_accessor :name, :height, :weight
+
+#   def initialize(n, h, w)
+#     @name = n
+#     @height = h
+#     @weight = w
+#   end
+
+#   def info()
+#     "#{name} weighs #{weight} and is #{height} tall."
+#   end
+
+#   def change_info(n, h, w)
+#     self.name = n
+#     self.height = h
+#     self.weight = w
+#   end
+  
+#   def speak
+#     "#{name} says Arf!"
+#   end
+# end
+
+# class Vehicle
+#   @@number_of_vehicles = 0
+
+#   def self.number_of_vehicles
+#     "This program has created #{@@number_of_vehicles} vehicles"
+#   end
+
+#   def initialize
+#     @@number_of_vehicles += 1
+#   end
+
+#   def self.calculate_gas_mileage(gas_tank, miles_on_one_tank)
+#     mileage = miles_on_one_tank / gas_tank
+#   end
+# end
+
+# class MyCar
+#   attr_accessor :year, :color, :model, :speed, :engine_on
+
+#   def initialize(year, color, model)
+#     self.year = year
+#     self.color = color
+#     self.model = model
+#     self.speed = 0
+#     self.engine_on = false
+#   end
+
+#   def accelerate()
+#     self.speed += 1
+#   end
+
+#   def decelerate()
+#     self.speed -= 1
+#   end
+
+#   def turn_engine_off_or_on()
+#     self.engine_on = !engine_on
+#   end
+
+#   def info()
+#     puts "Year: #{year}"
+#     puts "Color: #{color}"
+#     puts "Model: #{model}"
+#     puts "Speed: #{speed}"
+#     puts "Engine on? #{engine_on}"
+
+#   end
+
+#   def to_s
+#     "This a #{year} #{color} #{model}"
+#   end
+
+# end
+# vehicle = Vehicle.new
+# vehicle2 = Vehicle.new
+# p Vehicle.number_of_vehicles
+# car = MyCar.new(2000, 'Silver', "Toyota")
+
+class Person
+  attr_accessor :first_name, :last_name
+
+  def initialize(name)
+    full_name = name.split(' ')
+    @first_name = full_name.first
+    @last_name = full_name.size > 1 ? full_name.last : ''
   end
-  result.each do |k, v|
-    puts "#{k} => #{v}"
+
+  def name=(name)
+    full_name = name.split(' ')
+    self.first_name = full_name.first
+    self.last_name = full_name.size > 1 ? full_name.last : ''
   end
+
+  def name
+    self.first_name + ' ' + self.last_name
+  end
+
 end
 
-count_occurances(vehicles)
+bob = Person.new('Robert')
+p bob.name                  # => 'Robert'
+p bob.first_name            # => 'Robert'
+p bob.last_name             # => ''
+bob.last_name = 'Smith'
+p bob.name                  # => 'Robert Smith'
+
+bob.name = "John Adams"
+p bob.first_name            # => 'John'
+p bob.last_name             # => 'Adams'
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
